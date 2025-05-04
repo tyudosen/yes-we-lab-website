@@ -1,15 +1,19 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '../../access/authenticated'
+import { isAdminOrEditor } from '../../access/authenticated'
+import { protectRole } from './hooks/protectRole'
+import { user } from '@/access/user'
+import { admin } from '@/access/admin'
+import { anyone } from '@/access/anyone'
 
 export const Users: CollectionConfig = {
   slug: 'users',
   access: {
-    admin: authenticated,
-    create: authenticated,
-    delete: authenticated,
-    read: authenticated,
-    update: authenticated,
+    create: anyone,
+    read: user,
+    update: user,
+    delete: admin,
+    admin: isAdminOrEditor,
   },
   admin: {
     defaultColumns: ['name', 'email'],
@@ -20,6 +24,28 @@ export const Users: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
+    },
+    {
+      name: 'roles',
+      hasMany: true,
+      type: 'select',
+      hooks: {
+        beforeChange: [protectRole],
+      },
+      options: [
+        {
+          label: 'Admin',
+          value: 'admin',
+        },
+        {
+          label: 'User',
+          value: 'user',
+        },
+        {
+          label: 'Editor',
+          value: 'editor',
+        },
+      ],
     },
   ],
   timestamps: true,

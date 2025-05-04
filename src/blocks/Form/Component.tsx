@@ -1,27 +1,29 @@
 'use client'
 import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
-
 import { useRouter } from 'next/navigation'
 import React, { useCallback, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
-
 import { fields } from './fields'
 import { getClientSideURL } from '@/utilities/getURL'
+import { FormBlock as FormBlockType } from '@/payload-types'
 
-export type FormBlockType = {
-  blockName?: string
-  blockType?: 'formBlock'
-  enableIntro: boolean
-  form: FormType
-  introContent?: SerializedEditorState
-}
+// export type FormBlockType = {
+//   blockName?: string
+//   blockType?: 'formBlock'
+//   enableIntro: boolean
+//   form: FormType
+//   introContent?: SerializedEditorState
+//   isAuthForm: boolean
+// }
+//
+export interface ExtendedFormBlockType extends FormBlockType {}
 
 export const FormBlock: React.FC<
   {
     id?: string
+    form: FormType
   } & FormBlockType
 > = (props) => {
   const {
@@ -29,6 +31,8 @@ export const FormBlock: React.FC<
     form: formFromProps,
     form: { id: formID, confirmationMessage, confirmationType, redirect, submitButtonLabel } = {},
     introContent,
+    isAuthForm,
+    authAction,
   } = props
 
   const formMethods = useForm({
@@ -52,59 +56,93 @@ export const FormBlock: React.FC<
       const submitForm = async () => {
         setError(undefined)
 
-        const dataToSend = Object.entries(data).map(([name, value]) => ({
-          field: name,
-          value,
-        }))
-
         // delay loading indicator by 1s
         loadingTimerID = setTimeout(() => {
           setIsLoading(true)
         }, 1000)
 
-        try {
-          const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
-            body: JSON.stringify({
-              form: formID,
-              submissionData: dataToSend,
-            }),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            method: 'POST',
-          })
+        if (isAuthForm) {
+          switch (authAction) {
+            case 'login':
+              const body = data
+              try {
+                const req = await fetch(`${getClientSideURL()}/api/users/login`, {
+                  method: 'POST',
+                  credentials: 'include',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(body),
+                })
+                clearTimeout(loadingTimerID)
 
-          const res = await req.json()
+                if (req.status === 200) {
+                  setIsLoading(false)
+                  setHasSubmitted(true)
 
-          clearTimeout(loadingTimerID)
+                  redirect?.url && router.push(redirect?.url)
+                }
+              } catch (err) {
+                console.log(err)
+              }
 
-          if (req.status >= 400) {
-            setIsLoading(false)
+              break
+            case 'signUp':
+              console.log('signing up')
+              break
+            default:
+              break
+          }
+        } else {
+          const dataToSend = Object.entries(data).map(([name, value]) => ({
+            field: name,
+            value,
+          }))
 
-            setError({
-              message: res.errors?.[0]?.message || 'Internal Server Error',
-              status: res.status,
+          try {
+            const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
+              body: JSON.stringify({
+                form: formID,
+                submissionData: dataToSend,
+              }),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              method: 'POST',
             })
 
-            return
+            const res = await req.json()
+
+            clearTimeout(loadingTimerID)
+
+            if (req.status >= 400) {
+              setIsLoading(false)
+
+              setError({
+                message: res.errors?.[0]?.message || 'Internal Server Error',
+                status: res.status,
+              })
+
+              return
+            }
+
+            setIsLoading(false)
+            setHasSubmitted(true)
+
+            if (confirmationType === 'redirect' && redirect) {
+              const { url } = redirect
+
+              const redirectUrl = url
+
+              if (redirectUrl) router.push(redirectUrl)
+            }
+          } catch (err) {
+            console.warn(err)
+            setIsLoading(false)
+            setError({
+              message: 'Something went wrong.',
+            })
           }
-
-          setIsLoading(false)
-          setHasSubmitted(true)
-
-          if (confirmationType === 'redirect' && redirect) {
-            const { url } = redirect
-
-            const redirectUrl = url
-
-            if (redirectUrl) router.push(redirectUrl)
-          }
-        } catch (err) {
-          console.warn(err)
-          setIsLoading(false)
-          setError({
-            message: 'Something went wrong.',
-          })
         }
       }
 
@@ -132,6 +170,7 @@ export const FormBlock: React.FC<
                   formFromProps.fields &&
                   formFromProps.fields?.map((field, index) => {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    console.log(`field-${index}`, { field, index })
                     const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
                     if (Field) {
                       return (
@@ -142,6 +181,7 @@ export const FormBlock: React.FC<
                             {...formMethods}
                             control={control}
                             errors={errors}
+                            isAuthForm={isAuthForm}
                             register={register}
                           />
                         </div>

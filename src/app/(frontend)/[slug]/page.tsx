@@ -12,6 +12,9 @@ import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
+import { getMeUser } from '@/utilities/getMeUser'
+import { User } from '@/payload-types'
+import { redirect } from 'next/navigation'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -63,7 +66,17 @@ export default async function Page({ params: paramsPromise }: Args) {
     return <PayloadRedirects url={url} />
   }
 
-  const { hero, layout } = page
+  console.log('oage', page)
+  const { hero, layout, isProtected } = page
+
+  // if page is protected and user is not logged in, redirect to login page
+  if (isProtected) {
+    await getMeUser({ nullUserRedirect: '/login' })
+  }
+
+  if (page.slug === 'login') {
+    await getMeUser({ validUserRedirect: '/dashboard' })
+  }
 
   return (
     <article className="pt-16 pb-24">

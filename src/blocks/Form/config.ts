@@ -18,6 +18,30 @@ export const FormBlock: Block = {
       required: true,
     },
     {
+      name: 'isAuthForm',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'This is an authentication form',
+    },
+    {
+      name: 'authAction',
+      label: 'Authentication action',
+      type: 'select',
+      admin: {
+        condition: (_, { isAuthForm }) => Boolean(isAuthForm),
+      },
+      options: [
+        {
+          label: 'Login',
+          value: 'login',
+        },
+        {
+          label: 'Sign Up',
+          value: 'signUp',
+        },
+      ],
+    },
+    {
       name: 'enableIntro',
       type: 'checkbox',
       label: 'Enable Intro Content',

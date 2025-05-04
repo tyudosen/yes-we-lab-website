@@ -64,6 +64,11 @@ export const Pages: CollectionConfig<'pages'> = {
       required: true,
     },
     {
+      name: 'isProtected',
+      type: 'checkbox',
+      defaultValue: false,
+    },
+    {
       type: 'tabs',
       tabs: [
         {
