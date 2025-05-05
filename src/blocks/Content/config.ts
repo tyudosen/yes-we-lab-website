@@ -8,6 +8,7 @@ import {
 } from '@payloadcms/richtext-lexical'
 
 import { link } from '@/fields/link'
+import { FormBlock } from '../Form/config'
 
 const columnFields: Field[] = [
   {
@@ -34,6 +35,31 @@ const columnFields: Field[] = [
     ],
   },
   {
+    type: 'row',
+    fields: [
+      {
+        type: 'radio',
+        label: 'Content type',
+        name: 'contentType',
+        options: [
+          { label: 'Rich text', value: 'richText' },
+          { label: 'Block', value: 'block' },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'layout',
+    type: 'blocks',
+    maxRows: 1,
+    blocks: [FormBlock],
+    required: true,
+    admin: {
+      initCollapsed: true,
+      condition: (_, { contentType }) => contentType === 'block',
+    },
+  },
+  {
     name: 'richText',
     type: 'richText',
     editor: lexicalEditor({
@@ -47,10 +73,16 @@ const columnFields: Field[] = [
       },
     }),
     label: false,
+    admin: {
+      condition: (_, { contentType }) => contentType === 'richText',
+    },
   },
   {
     name: 'enableLink',
     type: 'checkbox',
+    admin: {
+      condition: (_, { contentType }) => contentType === 'richText',
+    },
   },
   link({
     overrides: {

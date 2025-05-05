@@ -21,6 +21,9 @@ export const linkGroup: LinkGroupType = ({ appearances, overrides = {} } = {}) =
     ],
     admin: {
       initCollapsed: true,
+      condition: (_, { type }) => {
+        return !['lowImpact', 'noImpact'].includes(type)
+      },
     },
   }
 
