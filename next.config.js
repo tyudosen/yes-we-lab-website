@@ -1,4 +1,5 @@
 import { withPayload } from '@payloadcms/next/withPayload'
+import {web}
 
 import redirects from './redirects.js'
 
@@ -22,7 +23,7 @@ const nextConfig = {
   },
   reactStrictMode: true,
   redirects,
-  webpack: (config) => {
+  webpack: (config, {webpack}) => {
     config.plugins.push(
       new webpack.IgnorePlugin({
         resourceRegExp: /^pg-native$|^cloudflare:sockets$/,
