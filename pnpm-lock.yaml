@@ -98,6 +98,9 @@ importers:
       sharp:
         specifier: 0.32.6
         version: 0.32.6
+      sharpalias:
+        specifier: npm:sharp@^0.34.1
+        version: sharp@0.34.1
       tailwind-merge:
         specifier: ^2.3.0
         version: 2.6.0
@@ -9668,7 +9671,6 @@ snapshots:
       '@img/sharp-wasm32': 0.34.1
       '@img/sharp-win32-ia32': 0.34.1
       '@img/sharp-win32-x64': 0.34.1
-    optional: true
 
   shebang-command@2.0.0:
     dependencies:
