@@ -1,3 +1,7 @@
 [build]
   publish = ".next"
   command = "npm run ci"
+
+[functions]
+  external_node_modules = ["sharp"]
+  included_files = ["node_modules/sharp/**/*"]
