@@ -9,6 +9,7 @@ import {
 
 import { link } from '@/fields/link'
 import { FormBlock } from '../Form/config'
+import { OrderStatusBlock } from '../OrderStatusBlock/config'
 
 const columnFields: Field[] = [
   {
@@ -52,7 +53,7 @@ const columnFields: Field[] = [
     name: 'layout',
     type: 'blocks',
     maxRows: 1,
-    blocks: [FormBlock],
+    blocks: [OrderStatusBlock],
     required: true,
     admin: {
       initCollapsed: true,

@@ -69,14 +69,15 @@ export default async function Page({ params: paramsPromise }: Args) {
   console.log('oage', page)
   const { hero, layout, isProtected } = page
 
+  // Turn this component into an SSR component to support this
   // if page is protected and user is not logged in, redirect to login page
-  if (isProtected) {
-    await getMeUser({ nullUserRedirect: '/login' })
-  }
-
-  if (page.slug === 'login') {
-    await getMeUser({ validUserRedirect: '/dashboard' })
-  }
+  // if (isProtected) {
+  //   await getMeUser({ nullUserRedirect: '/login' })
+  // }
+  //
+  // if (page.slug === 'login') {
+  //   await getMeUser({ validUserRedirect: '/dashboard' })
+  // }
 
   return (
     <article className="pb-24">
