@@ -1,0 +1,8 @@
+.progress-indicator {
+  background-color: hsl(var(--primary));
+}
+
+/* Allow custom indicator color via CSS variable */
+.progress-indicator[style*='--indicator-color'] {
+  background-color: var(--indicator-color);
+}

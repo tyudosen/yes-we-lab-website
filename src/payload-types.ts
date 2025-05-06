@@ -444,7 +444,7 @@ export interface ContentBlock {
     | {
         size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
         contentType?: ('richText' | 'block') | null;
-        layout?: FormBlock[] | null;
+        layout?: OrderStatusBlock[] | null;
         richText?: {
           root: {
             type: string;
@@ -486,6 +486,60 @@ export interface ContentBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OrderStatusBlock".
+ */
+export interface OrderStatusBlock {
+  test?: (number | null) | Post;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'orderStatusBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlock".
+ */
+export interface MediaBlock {
+  media: number | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArchiveBlock".
+ */
+export interface ArchiveBlock {
+  introContent?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  populateBy?: ('collection' | 'selection') | null;
+  relationTo?: 'posts' | null;
+  categories?: (number | Category)[] | null;
+  limit?: number | null;
+  selectedDocs?:
+    | {
+        relationTo: 'posts';
+        value: number | Post;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'archive';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -698,50 +752,6 @@ export interface Form {
     | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock".
- */
-export interface MediaBlock {
-  media: number | Media;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'mediaBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ArchiveBlock".
- */
-export interface ArchiveBlock {
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  populateBy?: ('collection' | 'selection') | null;
-  relationTo?: 'posts' | null;
-  categories?: (number | Category)[] | null;
-  limit?: number | null;
-  selectedDocs?:
-    | {
-        relationTo: 'posts';
-        value: number | Post;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'archive';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1086,7 +1096,7 @@ export interface ContentBlockSelect<T extends boolean = true> {
         layout?:
           | T
           | {
-              formBlock?: T | FormBlockSelect<T>;
+              orderStatusBlock?: T | OrderStatusBlockSelect<T>;
             };
         richText?: T;
         enableLink?: T;
@@ -1107,14 +1117,10 @@ export interface ContentBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormBlock_select".
+ * via the `definition` "OrderStatusBlock_select".
  */
-export interface FormBlockSelect<T extends boolean = true> {
-  form?: T;
-  isAuthForm?: T;
-  authAction?: T;
-  enableIntro?: T;
-  introContent?: T;
+export interface OrderStatusBlockSelect<T extends boolean = true> {
+  test?: T;
   id?: T;
   blockName?: T;
 }
@@ -1138,6 +1144,19 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
   categories?: T;
   limit?: T;
   selectedDocs?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormBlock_select".
+ */
+export interface FormBlockSelect<T extends boolean = true> {
+  form?: T;
+  isAuthForm?: T;
+  authAction?: T;
+  enableIntro?: T;
+  introContent?: T;
   id?: T;
   blockName?: T;
 }
