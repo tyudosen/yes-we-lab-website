@@ -19,7 +19,7 @@ export const generateOrderNumber: CollectionBeforeChangeHook = async ({
   operation,
 }) => {
   if (operation === 'create') {
-    let orderNumber = `${ORDER_PREFIX}-${generateRandomString()}`
+    let orderNumber = ''
     let isUnique = false
     const randomLength = 8 // Choose a suitable length for the random part
 

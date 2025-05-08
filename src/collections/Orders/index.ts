@@ -2,17 +2,23 @@ import { admin } from '@/access/admin'
 import { user } from '@/access/user'
 import { CollectionConfig } from 'payload'
 import { generateOrderNumber } from './hooks/generateOrderNumber'
-import { Effect, Console, pipe, HashMap, Option, Array, HashSet } from 'effect'
+import { Effect, pipe, HashMap, Option, Array as EArray, HashSet } from 'effect'
 import { Order, Service } from '@/payload-types'
 
-class ServiceError {
+class ServiceError extends Error {
   readonly _tag = 'ServiceError'
-  constructor(readonly message: string) {}
+  constructor(override readonly message: string) {
+    super(message)
+    Object.setPrototypeOf(this, new.target.prototype)
+  }
 }
 
-class FetchError {
+class FetchError extends Error {
   readonly _tag = 'FetchError'
-  constructor(readonly originalError: unknown) {}
+  constructor(readonly originalError: unknown) {
+    super(String(originalError))
+    Object.setPrototypeOf(this, new.target.prototype)
+  }
 }
 
 export const Orders: CollectionConfig = {
@@ -39,7 +45,7 @@ export const Orders: CollectionConfig = {
                 id,
                 depth: 0,
               }),
-            catch: (error) => new FetchError(`somthing went wrong: ${error}`),
+            catch: (error) => new FetchError(error),
           })
         }
 
@@ -51,7 +57,7 @@ export const Orders: CollectionConfig = {
               const existingServices: Array<{ id: number; service: Service }> = []
               const serviceIds: number[] = []
 
-              Array.forEach(items, (item) => {
+              EArray.forEach(items, (item) => {
                 // Use forEach for side effects (pushing to arrays)
                 if (typeof item.service === 'number') {
                   serviceIds.push(item.service)
@@ -85,9 +91,7 @@ export const Orders: CollectionConfig = {
                 }),
               )
             }),
-            // No need for a final Effect.map to mutate an external map
           )
-          // The returned Effect now succeeds with the final HashMap.
         }
 
         const processItem = (

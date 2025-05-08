@@ -13,7 +13,6 @@ export const AddOns: CollectionConfig = {
       label: 'Add-on Name',
     },
     {
-    {
       name: 'priceAdjustment',
       type: 'number',
       required: true,

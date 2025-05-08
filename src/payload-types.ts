@@ -807,6 +807,9 @@ export interface Service {
 export interface AddOn {
   id: number;
   title: string;
+  /**
+   * Positive values increase the price, negative values create discounts
+   */
   priceAdjustment: number;
   description?: string | null;
   updatedAt: string;
