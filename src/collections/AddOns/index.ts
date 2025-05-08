@@ -13,12 +13,15 @@ export const AddOns: CollectionConfig = {
       label: 'Add-on Name',
     },
     {
+    {
       name: 'priceAdjustment',
       type: 'number',
       required: true,
-      min: 0,
       label: 'Price Adjustment (+/-)',
       // You might consider making this field allow negative numbers if you have discounts as add-ons
+      admin: {
+        description: 'Positive values increase the price, negative values create discounts',
+      },
     },
     {
       name: 'description',
