@@ -10,6 +10,7 @@ import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
+import { uploadthingStorage } from '@payloadcms/storage-uploadthing'
 
 console.log('fields', fields.text)
 
@@ -98,4 +99,13 @@ export const plugins: Plugin[] = [
     },
   }),
   payloadCloudPlugin(),
+  uploadthingStorage({
+    collections: {
+      media: true,
+    },
+    options: {
+      token: process.env.UPLOADTHING_TOKEN,
+      acl: 'public-read',
+    },
+  }),
 ]

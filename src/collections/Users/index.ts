@@ -31,7 +31,7 @@ export const Users: CollectionConfig = {
       hasMany: true,
       type: 'select',
       hooks: {
-        beforeChange: [protectRole],
+        // beforeChange: [protectRole],
       },
       options: [
         {
