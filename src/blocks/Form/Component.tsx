@@ -18,7 +18,7 @@ import { FormBlock as FormBlockType } from '@/payload-types'
 //   isAuthForm: boolean
 // }
 //
-export interface ExtendedFormBlockType extends FormBlockType {}
+export interface ExtendedFormBlockType extends FormBlockType { }
 
 export const FormBlock: React.FC<
   {
@@ -83,12 +83,11 @@ export const FormBlock: React.FC<
                   redirect?.url && router.push(redirect?.url)
                 }
               } catch (err) {
-                console.log(err)
+                // console.log(err)
               }
 
               break
             case 'signUp':
-              console.log('signing up')
               break
             default:
               break
@@ -170,7 +169,6 @@ export const FormBlock: React.FC<
                   formFromProps.fields &&
                   formFromProps.fields?.map((field, index) => {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    console.log(`field-${index}`, { field, index })
                     const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
                     if (Field) {
                       return (

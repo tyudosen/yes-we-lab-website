@@ -17,7 +17,6 @@ type LowImpactHeroType =
   })
 
 export const HighImpactHeroV2: React.FC<LowImpactHeroType> = (props) => {
-  console.log('highImpactV2 -->', props);
   return (
     <section className="py-20 md:py-28">
       <div className="container px-4 mx-auto md:px-6">

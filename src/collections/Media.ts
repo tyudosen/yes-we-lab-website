@@ -9,8 +9,6 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
-import { authenticated } from '../access/authenticated'
-import { admin } from '@/access/admin'
 import { user } from '@/access/user'
 
 const filename = fileURLToPath(import.meta.url)
