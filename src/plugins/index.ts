@@ -100,6 +100,7 @@ export const plugins: Plugin[] = [
   }),
   payloadCloudPlugin(),
   uploadthingStorage({
+    clientUploads: true,
     collections: {
       media: true,
     },
