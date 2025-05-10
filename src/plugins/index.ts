@@ -12,7 +12,6 @@ import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
 import { uploadthingStorage } from '@payloadcms/storage-uploadthing'
 
-console.log('fields', fields.text)
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -63,7 +62,6 @@ export const plugins: Plugin[] = [
       payment: false,
       password: {
         ...fields.text,
-        slug: 'password',
         labels: { singular: 'Password', plural: 'Password fields' },
       },
     },
@@ -100,7 +98,6 @@ export const plugins: Plugin[] = [
   }),
   payloadCloudPlugin(),
   uploadthingStorage({
-    clientUploads: true,
     collections: {
       media: true,
     },

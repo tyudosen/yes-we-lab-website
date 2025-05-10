@@ -66,7 +66,6 @@ export default async function Page({ params: paramsPromise }: Args) {
     return <PayloadRedirects url={url} />
   }
 
-  console.log('oage', page)
   const { hero, layout, isProtected } = page
 
   // Turn this component into an SSR component to support this
