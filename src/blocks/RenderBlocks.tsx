@@ -8,6 +8,10 @@ import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { OrderStatusBlock } from './OrderStatusBlock/Component'
+import { ServicesBlock } from './ServicesBlock/Component'
+import { AboutUsBlock } from './AboutUsBlock/Component'
+import { ContactBlock } from './ContactBlock/Component'
+import { GalleryBlock } from './GalleryBlock/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -16,6 +20,10 @@ const blockComponents = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   orderStatusBlock: OrderStatusBlock,
+  servicesBlock: ServicesBlock,
+  aboutUsBlock: AboutUsBlock,
+  contactBlock: ContactBlock,
+  galleryBlock: GalleryBlock,
 }
 
 export const RenderBlocks: React.FC<{

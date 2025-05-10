@@ -72,6 +72,9 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    orders: Order;
+    services: Service;
+    addOns: AddOn;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -88,6 +91,9 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    orders: OrdersSelect<false> | OrdersSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
+    addOns: AddOnsSelect<false> | AddOnsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -150,7 +156,7 @@ export interface Page {
   title: string;
   isProtected?: boolean | null;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'noImpact';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'noImpact' | 'highImpactV2';
     richText?: {
       root: {
         type: string;
@@ -192,7 +198,18 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | OrderStatusBlock
+    | ServicesBlock
+    | AboutUsBlock
+    | GalleryBlock
+    | ContactBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -277,6 +294,7 @@ export interface Media {
     };
     [k: string]: unknown;
   } | null;
+  _key?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -290,6 +308,7 @@ export interface Media {
   focalY?: number | null;
   sizes?: {
     thumbnail?: {
+      _key?: string | null;
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -298,6 +317,7 @@ export interface Media {
       filename?: string | null;
     };
     square?: {
+      _key?: string | null;
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -306,6 +326,7 @@ export interface Media {
       filename?: string | null;
     };
     small?: {
+      _key?: string | null;
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -314,6 +335,7 @@ export interface Media {
       filename?: string | null;
     };
     medium?: {
+      _key?: string | null;
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -322,6 +344,7 @@ export interface Media {
       filename?: string | null;
     };
     large?: {
+      _key?: string | null;
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -330,6 +353,7 @@ export interface Media {
       filename?: string | null;
     };
     xlarge?: {
+      _key?: string | null;
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -338,6 +362,7 @@ export interface Media {
       filename?: string | null;
     };
     og?: {
+      _key?: string | null;
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -444,7 +469,7 @@ export interface ContentBlock {
     | {
         size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
         contentType?: ('richText' | 'block') | null;
-        layout?: OrderStatusBlock[] | null;
+        layout?: (OrderStatusBlock | ServicesBlock | AboutUsBlock | GalleryBlock | ContactBlock | FormBlock)[] | null;
         richText?: {
           root: {
             type: string;
@@ -499,47 +524,43 @@ export interface OrderStatusBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock".
+ * via the `definition` "ServicesBlock".
  */
-export interface MediaBlock {
-  media: number | Media;
+export interface ServicesBlock {
+  title?: string | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'mediaBlock';
+  blockType: 'servicesBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ArchiveBlock".
+ * via the `definition` "AboutUsBlock".
  */
-export interface ArchiveBlock {
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  populateBy?: ('collection' | 'selection') | null;
-  relationTo?: 'posts' | null;
-  categories?: (number | Category)[] | null;
-  limit?: number | null;
-  selectedDocs?:
-    | {
-        relationTo: 'posts';
-        value: number | Post;
-      }[]
-    | null;
+export interface AboutUsBlock {
+  title?: string | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'archive';
+  blockType: 'aboutUsBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryBlock".
+ */
+export interface GalleryBlock {
+  title?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'galleryBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactBlock".
+ */
+export interface ContactBlock {
+  title?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contactBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -755,6 +776,98 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlock".
+ */
+export interface MediaBlock {
+  media: number | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArchiveBlock".
+ */
+export interface ArchiveBlock {
+  introContent?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  populateBy?: ('collection' | 'selection') | null;
+  relationTo?: 'posts' | null;
+  categories?: (number | Category)[] | null;
+  limit?: number | null;
+  selectedDocs?:
+    | {
+        relationTo: 'posts';
+        value: number | Post;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'archive';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: number;
+  orderNumber?: string | null;
+  totalAmount: number;
+  items?:
+    | {
+        service: number | Service;
+        quantity?: number | null;
+        unitPrice?: number | null;
+        subtotal?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: number;
+  name: string;
+  basePrice: number;
+  type: 'development' | 'scanning' | 'prints';
+  availableAddons?: (number | AddOn)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "addOns".
+ */
+export interface AddOn {
+  id: number;
+  title: string;
+  /**
+   * Positive values increase the price, negative values create discounts
+   */
+  priceAdjustment: number;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -946,6 +1059,18 @@ export interface PayloadLockedDocument {
         value: number | User;
       } | null)
     | ({
+        relationTo: 'orders';
+        value: number | Order;
+      } | null)
+    | ({
+        relationTo: 'services';
+        value: number | Service;
+      } | null)
+    | ({
+        relationTo: 'addOns';
+        value: number | AddOn;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: number | Redirect;
       } | null)
@@ -1044,6 +1169,11 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        orderStatusBlock?: T | OrderStatusBlockSelect<T>;
+        servicesBlock?: T | ServicesBlockSelect<T>;
+        aboutUsBlock?: T | AboutUsBlockSelect<T>;
+        galleryBlock?: T | GalleryBlockSelect<T>;
+        contactBlock?: T | ContactBlockSelect<T>;
       };
   meta?:
     | T
@@ -1097,6 +1227,11 @@ export interface ContentBlockSelect<T extends boolean = true> {
           | T
           | {
               orderStatusBlock?: T | OrderStatusBlockSelect<T>;
+              servicesBlock?: T | ServicesBlockSelect<T>;
+              aboutUsBlock?: T | AboutUsBlockSelect<T>;
+              galleryBlock?: T | GalleryBlockSelect<T>;
+              contactBlock?: T | ContactBlockSelect<T>;
+              formBlock?: T | FormBlockSelect<T>;
             };
         richText?: T;
         enableLink?: T;
@@ -1126,6 +1261,55 @@ export interface OrderStatusBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesBlock_select".
+ */
+export interface ServicesBlockSelect<T extends boolean = true> {
+  title?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutUsBlock_select".
+ */
+export interface AboutUsBlockSelect<T extends boolean = true> {
+  title?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryBlock_select".
+ */
+export interface GalleryBlockSelect<T extends boolean = true> {
+  title?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactBlock_select".
+ */
+export interface ContactBlockSelect<T extends boolean = true> {
+  title?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormBlock_select".
+ */
+export interface FormBlockSelect<T extends boolean = true> {
+  form?: T;
+  isAuthForm?: T;
+  authAction?: T;
+  enableIntro?: T;
+  introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "MediaBlock_select".
  */
 export interface MediaBlockSelect<T extends boolean = true> {
@@ -1144,19 +1328,6 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
   categories?: T;
   limit?: T;
   selectedDocs?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormBlock_select".
- */
-export interface FormBlockSelect<T extends boolean = true> {
-  form?: T;
-  isAuthForm?: T;
-  authAction?: T;
-  enableIntro?: T;
-  introContent?: T;
   id?: T;
   blockName?: T;
 }
@@ -1198,6 +1369,7 @@ export interface PostsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
+  _key?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -1215,6 +1387,7 @@ export interface MediaSelect<T extends boolean = true> {
         thumbnail?:
           | T
           | {
+              _key?: T;
               url?: T;
               width?: T;
               height?: T;
@@ -1225,6 +1398,7 @@ export interface MediaSelect<T extends boolean = true> {
         square?:
           | T
           | {
+              _key?: T;
               url?: T;
               width?: T;
               height?: T;
@@ -1235,6 +1409,7 @@ export interface MediaSelect<T extends boolean = true> {
         small?:
           | T
           | {
+              _key?: T;
               url?: T;
               width?: T;
               height?: T;
@@ -1245,6 +1420,7 @@ export interface MediaSelect<T extends boolean = true> {
         medium?:
           | T
           | {
+              _key?: T;
               url?: T;
               width?: T;
               height?: T;
@@ -1255,6 +1431,7 @@ export interface MediaSelect<T extends boolean = true> {
         large?:
           | T
           | {
+              _key?: T;
               url?: T;
               width?: T;
               height?: T;
@@ -1265,6 +1442,7 @@ export interface MediaSelect<T extends boolean = true> {
         xlarge?:
           | T
           | {
+              _key?: T;
               url?: T;
               width?: T;
               height?: T;
@@ -1275,6 +1453,7 @@ export interface MediaSelect<T extends boolean = true> {
         og?:
           | T
           | {
+              _key?: T;
               url?: T;
               width?: T;
               height?: T;
@@ -1320,6 +1499,48 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders_select".
+ */
+export interface OrdersSelect<T extends boolean = true> {
+  orderNumber?: T;
+  totalAmount?: T;
+  items?:
+    | T
+    | {
+        service?: T;
+        quantity?: T;
+        unitPrice?: T;
+        subtotal?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
+  name?: T;
+  basePrice?: T;
+  type?: T;
+  availableAddons?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "addOns_select".
+ */
+export interface AddOnsSelect<T extends boolean = true> {
+  title?: T;
+  priceAdjustment?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
