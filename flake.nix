@@ -20,6 +20,7 @@
             findutils
             jq
             nodejs
+            postgresql
           ];
         };
       });

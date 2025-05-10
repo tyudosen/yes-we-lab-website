@@ -153,9 +153,11 @@ export const Orders: CollectionConfig = {
               // Step 3: Use map to update the data object with the processed items
               // This map will receive the array of updated items from Effect.all
               Effect.map((processedItems) => {
+                const totalAmount = processedItems.reduce((acc, curr) => acc + curr.subtotal, 0)
                 // Create a new data object with the updated items (immutable update)
                 const updatedData: Order = {
                   ...data,
+                  totalAmount,
                   items: processedItems,
                 }
                 return updatedData // Return the updated data as the success value
@@ -182,7 +184,10 @@ export const Orders: CollectionConfig = {
     {
       name: 'totalAmount',
       type: 'number',
-      // required: true,
+      required: true,
+      admin: {
+        readOnly: true,
+      },
       label: 'Total',
     },
     {
