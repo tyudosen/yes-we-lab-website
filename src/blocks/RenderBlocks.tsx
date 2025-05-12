@@ -12,6 +12,8 @@ import { ServicesBlock } from './ServicesBlock/Component'
 import { AboutUsBlock } from './AboutUsBlock/Component'
 import { ContactBlock } from './ContactBlock/Component'
 import { GalleryBlock } from './GalleryBlock/Component'
+import { RecentScans } from './RecentScansBlock/Component'
+import { QuickActions } from './QuickActionBlock/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -24,6 +26,8 @@ const blockComponents = {
   aboutUsBlock: AboutUsBlock,
   contactBlock: ContactBlock,
   galleryBlock: GalleryBlock,
+  recentScansBlock: RecentScans,
+  quickActionsBlock: QuickActions,
 }
 
 export const RenderBlocks: React.FC<{

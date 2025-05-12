@@ -26,6 +26,8 @@ import { ServicesBlock } from '@/blocks/ServicesBlock/config'
 import { AboutUsBlock } from '@/blocks/AboutUsBlock/config'
 import { GalleryBlock } from '@/blocks/GalleryBlock/config'
 import { ContactBlock } from '@/blocks/ContactBlock/config'
+import { RecentScans } from '@/blocks/RecentScansBlock/config'
+import { QuickActions } from '@/blocks/QuickActionBlock/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -86,7 +88,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, OrderStatusBlock, ServicesBlock, AboutUsBlock, GalleryBlock, ContactBlock],
+              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, OrderStatusBlock, ServicesBlock, AboutUsBlock, GalleryBlock, ContactBlock, RecentScans, QuickActions],
               required: true,
               admin: {
                 initCollapsed: true,

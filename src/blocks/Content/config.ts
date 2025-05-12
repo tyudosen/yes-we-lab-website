@@ -14,6 +14,8 @@ import { ServicesBlock } from '../ServicesBlock/config'
 import { AboutUsBlock } from '../AboutUsBlock/config'
 import { GalleryBlock } from '../GalleryBlock/config'
 import { ContactBlock } from '../ContactBlock/config'
+import { RecentScans } from '../RecentScansBlock/config'
+import { QuickActions } from '../QuickActionBlock/config'
 
 const columnFields: Field[] = [
   {
@@ -57,7 +59,7 @@ const columnFields: Field[] = [
     name: 'layout',
     type: 'blocks',
     maxRows: 1,
-    blocks: [OrderStatusBlock, ServicesBlock, AboutUsBlock, GalleryBlock, AboutUsBlock, ContactBlock, FormBlock],
+    blocks: [OrderStatusBlock, ServicesBlock, AboutUsBlock, GalleryBlock, AboutUsBlock, ContactBlock, FormBlock, RecentScans, QuickActions],
     required: true,
     admin: {
       initCollapsed: true,

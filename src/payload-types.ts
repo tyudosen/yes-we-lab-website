@@ -156,7 +156,7 @@ export interface Page {
   title: string;
   isProtected?: boolean | null;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'noImpact' | 'highImpactV2';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'noImpact' | 'highImpactV2' | 'dashboard';
     richText?: {
       root: {
         type: string;
@@ -209,6 +209,8 @@ export interface Page {
     | AboutUsBlock
     | GalleryBlock
     | ContactBlock
+    | RecentScans
+    | QuickActions
   )[];
   meta?: {
     title?: string | null;
@@ -469,7 +471,18 @@ export interface ContentBlock {
     | {
         size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
         contentType?: ('richText' | 'block') | null;
-        layout?: (OrderStatusBlock | ServicesBlock | AboutUsBlock | GalleryBlock | ContactBlock | FormBlock)[] | null;
+        layout?:
+          | (
+              | OrderStatusBlock
+              | ServicesBlock
+              | AboutUsBlock
+              | GalleryBlock
+              | ContactBlock
+              | FormBlock
+              | RecentScans
+              | QuickActions
+            )[]
+          | null;
         richText?: {
           root: {
             type: string;
@@ -763,6 +776,26 @@ export interface Form {
     | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RecentScans".
+ */
+export interface RecentScans {
+  title?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'recentScansBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "QuickActions".
+ */
+export interface QuickActions {
+  title?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'quickActionsBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1164,6 +1197,8 @@ export interface PagesSelect<T extends boolean = true> {
         aboutUsBlock?: T | AboutUsBlockSelect<T>;
         galleryBlock?: T | GalleryBlockSelect<T>;
         contactBlock?: T | ContactBlockSelect<T>;
+        recentScansBlock?: T | RecentScansSelect<T>;
+        quickActionsBlock?: T | QuickActionsSelect<T>;
       };
   meta?:
     | T
@@ -1222,6 +1257,8 @@ export interface ContentBlockSelect<T extends boolean = true> {
               galleryBlock?: T | GalleryBlockSelect<T>;
               contactBlock?: T | ContactBlockSelect<T>;
               formBlock?: T | FormBlockSelect<T>;
+              recentScansBlock?: T | RecentScansSelect<T>;
+              quickActionsBlock?: T | QuickActionsSelect<T>;
             };
         richText?: T;
         enableLink?: T;
@@ -1295,6 +1332,24 @@ export interface FormBlockSelect<T extends boolean = true> {
   authAction?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RecentScans_select".
+ */
+export interface RecentScansSelect<T extends boolean = true> {
+  title?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "QuickActions_select".
+ */
+export interface QuickActionsSelect<T extends boolean = true> {
+  title?: T;
   id?: T;
   blockName?: T;
 }
