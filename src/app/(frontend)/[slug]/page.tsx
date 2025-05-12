@@ -79,7 +79,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   // }
 
   return (
-    <article className="pb-24">
+    <article className="max-w-5xl mx-auto px-4 py-12">
       <PageClient />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />

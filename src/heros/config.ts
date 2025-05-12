@@ -42,6 +42,10 @@ export const hero: Field = {
         {
           label: 'High Impact V2',
           value: 'highImpactV2'
+        },
+        {
+          label: 'Dashboard',
+          value: 'dashboard'
         }
       ],
       required: true,
