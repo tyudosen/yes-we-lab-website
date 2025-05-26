@@ -7,7 +7,7 @@ import { Effect } from 'effect'
 const PageClient: React.FC = () => {
   /* Force the header to be dark mode while we have an image behind it */
   const { setHeaderTheme } = useHeaderTheme()
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
 
   const setIsOpenEffect = useMemo(() => Effect.sync(() => setIsOpen(() => false)), [setIsOpen])
   const setIsOpenRun = useCallback(() => Effect.runSync(setIsOpenEffect), [setIsOpenEffect])
