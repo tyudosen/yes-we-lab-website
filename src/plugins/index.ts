@@ -62,6 +62,7 @@ export const plugins: Plugin[] = [
       payment: false,
       password: {
         ...fields.text,
+        slug: 'password',
         labels: { singular: 'Password', plural: 'Password fields' },
       },
     },

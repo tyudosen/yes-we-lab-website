@@ -191,6 +191,15 @@ export const Orders: CollectionConfig = {
       label: 'Total',
     },
     {
+      name: 'placedBy',
+      type: 'relationship',
+      relationTo: 'users',
+      admin: {
+        position: 'sidebar',
+        // readOnly: true
+      }
+    },
+    {
       name: 'items',
       type: 'array',
       fields: [
@@ -224,6 +233,10 @@ export const Orders: CollectionConfig = {
           required: true,
           min: 0,
         },
+        {
+          name: 'notes',
+          type: 'richText',
+        }
       ],
     },
   ],

@@ -717,6 +717,16 @@ export interface Form {
             blockName?: string | null;
             blockType: 'textarea';
           }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'password';
+          }
       )[]
     | null;
   submitButtonLabel?: string | null;
@@ -849,12 +859,28 @@ export interface Order {
   id: number;
   orderNumber?: string | null;
   totalAmount: number;
+  placedBy?: (number | null) | User;
   items?:
     | {
         service: number | Service;
         quantity?: number | null;
         unitPrice?: number | null;
         subtotal?: number | null;
+        notes?: {
+          root: {
+            type: string;
+            children: {
+              type: string;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
         id?: string | null;
       }[]
     | null;
@@ -1552,6 +1578,7 @@ export interface UsersSelect<T extends boolean = true> {
 export interface OrdersSelect<T extends boolean = true> {
   orderNumber?: T;
   totalAmount?: T;
+  placedBy?: T;
   items?:
     | T
     | {
@@ -1559,6 +1586,7 @@ export interface OrdersSelect<T extends boolean = true> {
         quantity?: T;
         unitPrice?: T;
         subtotal?: T;
+        notes?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -1702,6 +1730,17 @@ export interface FormsSelect<T extends boolean = true> {
               blockName?: T;
             };
         textarea?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        password?:
           | T
           | {
               name?: T;
