@@ -4,13 +4,15 @@ import { redirect } from 'next/navigation'
 import type { User } from '../payload-types'
 import { getClientSideURL } from './getURL'
 
+export interface GetMeUserResponse {
+  token: string;
+  user: User
+}
+
 export const getMeUser = async (args?: {
   nullUserRedirect?: string
   validUserRedirect?: string
-}): Promise<{
-  token: string
-  user: User
-}> => {
+}): Promise<GetMeUserResponse> => {
   const { nullUserRedirect, validUserRedirect } = args || {}
   const cookieStore = await cookies()
   const token = cookieStore.get('payload-token')?.value

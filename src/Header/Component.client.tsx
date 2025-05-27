@@ -43,25 +43,46 @@
 'use client'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { redirect, usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import type { Header } from '@/payload-types'
+import type { Header, User } from '@/payload-types'
 import { Logo } from '@/components/Logo/Logo'
 import { HeaderNav } from './Nav'
 import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 import { Aperture, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Effect, pipe } from 'effect'
+import { getClientSideURL } from '@/utilities/getURL'
+import { useRouter } from 'next/navigation'
 
 interface HeaderClientProps {
   data: Header
+  user: User;
 }
 
-export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
+const logoutEffect = Effect.tryPromise({
+  try: async () => fetch(`${getClientSideURL()}/api/users/logout`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  ,
+  catch: (e) => new Error(`Something went wrong ${e}`)
+})
+
+// const handleLogout = () => Effect.runPromise(logoutEffect)
+
+
+
+export const HeaderClient: React.FC<HeaderClientProps> = ({ data, user }) => {
   /* Storing the value in a useState to avoid hydration errors */
   const [theme, setTheme] = useState<string | null>(null)
   const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const pathname = usePathname()
+  const router = useRouter()
 
   useEffect(() => {
     setHeaderTheme(null)
@@ -72,6 +93,17 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [headerTheme])
+
+  const handleLogout = () => Effect.runPromise(
+    pipe(
+      logoutEffect,
+      Effect.andThen(Effect.sync(() => {
+        router.refresh()
+        return router.push('/home')
+      }))
+    )
+
+  );
 
   return (
     <header className="border-b border-border">
@@ -99,6 +131,15 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           <Button variant="outline" size="sm" className="hidden md:inline-flex" asChild>
             <Link href="/login">Book Now</Link>
           </Button>
+          {user &&
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+            >
+              Logout
+            </Button>
+          }
+
           <Button
             variant="ghost"
             size="sm"
@@ -141,6 +182,14 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
             >
               Contact
             </Link>
+            {user &&
+              <Link href="/home"
+                className="block text-sm font-medium text-muted-foreground hover:text-foreground"
+                onClick={handleLogout}
+              >
+                Logout
+              </Link>
+            }
             <Button variant="outline" size="sm" className="w-full" asChild>
               <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
                 Book Now
