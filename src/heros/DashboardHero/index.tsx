@@ -3,9 +3,10 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import pluralize from 'pluralize';
 
-const payload = await getPayload({ config })
+
 
 export const DashboardHero = async () => {
+  const payload = await getPayload({ config })
   const { user } = await getMeUser();
   const { name, id } = user;
   const { totalDocs: orderCount } = await payload.count({
