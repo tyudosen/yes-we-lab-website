@@ -8,16 +8,10 @@ import { Button } from '@/components/ui/button'
 import { fields } from './fields'
 import { getClientSideURL } from '@/utilities/getURL'
 import { FormBlock as FormBlockType } from '@/payload-types'
+import { useAuth } from '@/providers/Auth'
+import { Effect } from 'effect'
 
-// export type FormBlockType = {
-//   blockName?: string
-//   blockType?: 'formBlock'
-//   enableIntro: boolean
-//   form: FormType
-//   introContent?: SerializedEditorState
-//   isAuthForm: boolean
-// }
-//
+
 export interface ExtendedFormBlockType extends FormBlockType { }
 
 export const FormBlock: React.FC<
@@ -49,6 +43,7 @@ export const FormBlock: React.FC<
   const [hasSubmitted, setHasSubmitted] = useState<boolean>()
   const [error, setError] = useState<{ message: string; status?: string } | undefined>()
   const router = useRouter()
+  const { login } = useAuth()
 
   const onSubmit = useCallback(
     (data: FormFieldBlock[]) => {
@@ -66,22 +61,13 @@ export const FormBlock: React.FC<
             case 'login':
               const body = data
               try {
-                const req = await fetch(`${getClientSideURL()}/api/users/login`, {
-                  method: 'POST',
-                  credentials: 'include',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(body),
-                })
+                await Effect.runPromise(login(body))
                 clearTimeout(loadingTimerID)
 
-                if (req.status === 200) {
-                  setIsLoading(false)
-                  setHasSubmitted(true)
+                setIsLoading(false)
+                setHasSubmitted(true)
 
-                  redirect?.url && router.push(redirect?.url)
-                }
+                redirect?.url && router.push(redirect?.url)
               } catch (err) {
                 // console.log(err)
               }

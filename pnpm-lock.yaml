@@ -107,6 +107,9 @@ importers:
       payload:
         specifier: 3.37.0
         version: 3.37.0(graphql@16.11.0)(typescript@5.7.3)
+      pluralize:
+        specifier: ^8.0.0
+        version: 8.0.0
       prism-react-renderer:
         specifier: ^2.3.1
         version: 2.4.1(react@19.1.0)
@@ -138,6 +141,9 @@ importers:
       '@types/node':
         specifier: 22.5.4
         version: 22.5.4
+      '@types/pluralize':
+        specifier: ^0.0.33
+        version: 0.0.33
       '@types/react':
         specifier: 19.1.0
         version: 19.1.0
@@ -2055,6 +2061,9 @@ packages:
 
   '@types/pg@8.10.2':
     resolution: {integrity: sha512-MKFs9P6nJ+LAeHLU3V0cODEOgyThJ3OAnmOlsZsxux6sfQs3HRXR5bBn7xG5DjckEFhTAxsXi7k7cd0pCMxpJw==}
+
+  '@types/pluralize@0.0.33':
+    resolution: {integrity: sha512-JOqsl+ZoCpP4e8TDke9W79FDcSgPAR0l6pixx2JHkhnRjvShyYiAYw2LVsnA7K08Y6DeOnaU6ujmENO4os/cYg==}
 
   '@types/prismjs@1.26.5':
     resolution: {integrity: sha512-AUZTa7hQ2KY5L7AmtSiqxlhWxb4ina0yd8hNbl4TWuqnv/pFP0nDMb3YrfSBf4hJVGLh2YEIBfKaBW/9UEl6IQ==}
@@ -7440,6 +7449,8 @@ snapshots:
       '@types/node': 22.5.4
       pg-protocol: 1.9.5
       pg-types: 4.0.2
+
+  '@types/pluralize@0.0.33': {}
 
   '@types/prismjs@1.26.5': {}
 

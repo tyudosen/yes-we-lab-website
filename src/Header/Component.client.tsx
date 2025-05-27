@@ -54,6 +54,7 @@ import { Button } from "@/components/ui/button"
 import { Effect, pipe } from 'effect'
 import { getClientSideURL } from '@/utilities/getURL'
 import { useRouter } from 'next/navigation'
+import { useAuth } from '@/providers/Auth'
 
 interface HeaderClientProps {
   data: Header
@@ -76,13 +77,14 @@ const logoutEffect = Effect.tryPromise({
 
 
 
-export const HeaderClient: React.FC<HeaderClientProps> = ({ data, user }) => {
+export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   /* Storing the value in a useState to avoid hydration errors */
   const [theme, setTheme] = useState<string | null>(null)
   const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
+  const { user, logout } = useAuth()
 
   useEffect(() => {
     setHeaderTheme(null)
@@ -96,10 +98,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, user }) => {
 
   const handleLogout = () => Effect.runPromise(
     pipe(
-      logoutEffect,
+      logout(),
       Effect.andThen(Effect.sync(() => {
-        router.refresh()
-        return router.push('/home')
+        router.push('/home')
+        return router.refresh()
       }))
     )
 
