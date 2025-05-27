@@ -2,7 +2,7 @@ import { Mail, Phone, Instagram } from "lucide-react"
 
 export function ContactBlock() {
   return (
-    <div className="space-y-4">
+    <div id="contact" className="space-y-4">
       <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Get in Touch</h2>
       <p className="text-muted-foreground md:text-xl">
         Have questions about our services or want to book an appointment? Reach out to us.
