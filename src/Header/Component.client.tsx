@@ -115,16 +115,16 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           <span className="text-lg font-medium tracking-tight">Yes We Lab</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6">
-          <Link href="#services" className="text-sm font-medium text-muted-foreground hover:text-foreground">
+          <Link href="/home#services" className="text-sm font-medium text-muted-foreground hover:text-foreground">
             Services
           </Link>
-          <Link href="#about" className="text-sm font-medium text-muted-foreground hover:text-foreground">
+          <Link href="/home#about" className="text-sm font-medium text-muted-foreground hover:text-foreground">
             About
           </Link>
-          <Link href="#gallery" className="text-sm font-medium text-muted-foreground hover:text-foreground">
+          <Link href="/home#gallery" className="text-sm font-medium text-muted-foreground hover:text-foreground">
             Gallery
           </Link>
-          <Link href="#contact" className="text-sm font-medium text-muted-foreground hover:text-foreground">
+          <Link href="/home#contact" className="text-sm font-medium text-muted-foreground hover:text-foreground">
             Contact
           </Link>
         </nav>

@@ -36,6 +36,16 @@ export const Orders: CollectionConfig = {
     beforeChange: [
       generateOrderNumber,
       async ({ data, req: { payload }, operation }) => {
+        if (data?.status) {
+          return data
+        }
+
+        return {
+          ...data,
+          status: 'PENDING'
+        }
+      },
+      async ({ data, req: { payload }, operation }) => {
         const fetchService = (id: number | null | undefined) => {
           if (!id) return Effect.fail(new ServiceError('id is undefined'))
           return Effect.tryPromise({
@@ -179,6 +189,27 @@ export const Orders: CollectionConfig = {
       type: 'text',
       admin: {
         readOnly: true,
+      },
+    },
+    {
+      name: 'status',
+      type: 'select',
+      options: [
+        {
+          label: 'Pending',
+          value: 'PENDING'
+        },
+        {
+          label: 'Processing',
+          value: 'PROCESSING'
+        },
+        {
+          label: 'Complete',
+          value: 'COMPLETE'
+        }
+      ],
+      admin: {
+        position: 'sidebar'
       },
     },
     {

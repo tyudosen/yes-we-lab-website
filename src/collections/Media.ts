@@ -9,7 +9,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
-import { user } from '@/access/user'
+import { user, userMediaCollection } from '@/access/user'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -19,7 +19,7 @@ export const Media: CollectionConfig = {
   access: {
     create: anyone,
     delete: user,
-    read: anyone,
+    read: userMediaCollection,
     update: user,
   },
   fields: [
@@ -27,6 +27,11 @@ export const Media: CollectionConfig = {
       name: 'alt',
       type: 'text',
       //required: true,
+    },
+    {
+      name: 'ownedBy',
+      type: 'relationship',
+      relationTo: 'users',
     },
     {
       name: 'caption',
