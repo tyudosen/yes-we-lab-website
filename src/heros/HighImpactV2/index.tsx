@@ -5,6 +5,7 @@ import type { Page } from '@/payload-types'
 
 
 import RichText from '@/components/RichText'
+import Link from 'next/link'
 
 type LowImpactHeroType =
   | {
@@ -30,8 +31,16 @@ export const HighImpactHeroV2: React.FC<LowImpactHeroType> = (props) => {
               who value quality.
             </p>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
-              <Button>Our Services</Button>
-              <Button variant="outline">Contact Us</Button>
+              <Button>
+                <Link href="/home#services">
+                  Our Services
+                </Link>
+              </Button>
+              <Button variant="outline">
+                <Link href="/home#contact">
+                  Contact Us
+                </Link>
+              </Button>
             </div>
           </div>
           <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-lg">

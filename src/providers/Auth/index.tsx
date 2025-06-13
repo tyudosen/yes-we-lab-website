@@ -22,23 +22,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode; api?: 'rest' | 
   }, [setUser])
 
   const create = useCallback<Create>(
-    async args => {
-      if (api === 'rest') {
-        const user = await Effect.runPromise(rest(`${getClientSideURL()}/api/users`, args))
-        setUser(user)
-        return user
-      }
+    args => {
+      //if (api === 'rest') {
+      // const user = await Effect.runPromise(rest(`${getClientSideURL()}/api/users`, args))
+      // setUser(user)
+      // return user
+      const program = pipe(
+        rest(`${getClientSideURL()}/api/users`, args),
+        Effect.tap((user) => setUserEffect(user))
+      )
+      return program
+      //}
 
-      if (api === 'gql') {
-        const { createUser: user } = await gql(`mutation {
-        createUser(data: { email: "${args.email}", password: "${args.password}", firstName: "${args.firstName}", lastName: "${args.lastName}" }) {
-          ${USER}
-        }
-      }`)
-
-        setUser(user)
-        return user
-      }
+      // if (api === 'gql') {
+      //   const { createUser: user } = await gql(`mutation {
+      //   createUser(data: { email: "${args.email}", password: "${args.password}", firstName: "${args.firstName}", lastName: "${args.lastName}" }) {
+      //     ${USER}
+      //   }
+      // }`)
+      //
+      //   setUser(user)
+      //   return user
+      // }
     },
     [api],
   )
@@ -78,17 +83,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode; api?: 'rest' | 
   }, [api])
 
   const logout = useCallback<Logout>(() => {
-    if (api === 'rest') {
-      // await Effect.runPromise(rest(`${getClientSideURL()}/api/users/logout`))
-      // setUser(null)
-      // return
-      const program = pipe(
-        rest(`${getClientSideURL()}/api/users/logout`),
-        Effect.tap(() => setUserEffect(null)),
-        Effect.flatMap(() => Effect.succeed(undefined))
-      )
-      return program
-    }
+    // if (api === 'rest') {
+    // await Effect.runPromise(rest(`${getClientSideURL()}/api/users/logout`))
+    // setUser(null)
+    // return
+    const program = pipe(
+      rest(`${getClientSideURL()}/api/users/logout`),
+      Effect.tap(() => setUserEffect(null)),
+      Effect.flatMap(() => Effect.succeed(undefined))
+    )
+    return program
+    // }
 
     // if (api === 'gql') {
     //   await gql(`mutation {

@@ -43,7 +43,7 @@ export const FormBlock: React.FC<
   const [hasSubmitted, setHasSubmitted] = useState<boolean>()
   const [error, setError] = useState<{ message: string; status?: string } | undefined>()
   const router = useRouter()
-  const { login } = useAuth()
+  const { login, create } = useAuth()
 
   const onSubmit = useCallback(
     (data: FormFieldBlock[]) => {
@@ -59,9 +59,8 @@ export const FormBlock: React.FC<
         if (isAuthForm) {
           switch (authAction) {
             case 'login':
-              const body = data
               try {
-                await Effect.runPromise(login(body))
+                await Effect.runPromise(login(data))
                 clearTimeout(loadingTimerID)
 
                 setIsLoading(false)
@@ -74,6 +73,18 @@ export const FormBlock: React.FC<
 
               break
             case 'signUp':
+              await Effect.runPromise(create(data))
+              await Effect.runPromise(login({
+                email: data?.email,
+                password: data?.password
+              }))
+              clearTimeout(loadingTimerID)
+
+              setIsLoading(false)
+              setHasSubmitted(true)
+
+              redirect?.url && router.push(redirect?.url)
+
               break
             default:
               break

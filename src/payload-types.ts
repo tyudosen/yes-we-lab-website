@@ -281,6 +281,7 @@ export interface Post {
 export interface Media {
   id: number;
   alt?: string | null;
+  ownedBy?: (number | null) | User;
   caption?: {
     root: {
       type: string;
@@ -376,6 +377,25 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  name?: string | null;
+  roles?: ('admin' | 'user' | 'editor')[] | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
 export interface Category {
@@ -394,25 +414,6 @@ export interface Category {
     | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number;
-  name?: string | null;
-  roles?: ('admin' | 'user' | 'editor')[] | null;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -858,6 +859,7 @@ export interface ArchiveBlock {
 export interface Order {
   id: number;
   orderNumber?: string | null;
+  status?: ('PENDING' | 'PROCESSING' | 'COMPLETE') | null;
   totalAmount: number;
   placedBy?: (number | null) | User;
   items?:
@@ -1439,6 +1441,7 @@ export interface PostsSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  ownedBy?: T;
   caption?: T;
   _key?: T;
   updatedAt?: T;
@@ -1577,6 +1580,7 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface OrdersSelect<T extends boolean = true> {
   orderNumber?: T;
+  status?: T;
   totalAmount?: T;
   placedBy?: T;
   items?:

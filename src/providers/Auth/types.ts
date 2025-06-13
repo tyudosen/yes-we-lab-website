@@ -13,9 +13,8 @@ export type ForgotPassword = (args: { email: string }) => Promise<User> // eslin
 export type Create = (args: {
   email: string
   password: string
-  firstName: string
-  lastName: string
-}) => Promise<User> // eslint-disable-line no-unused-vars
+  name: string
+}) => Effect.Effect<User, Error, never>// eslint-disable-line no-unused-vars
 
 export type Login = (args: { email: string; password: string }) => Effect.Effect<User, Error, never> // eslint-disable-line no-unused-vars
 
