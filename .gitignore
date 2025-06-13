@@ -13,3 +13,5 @@ public/robots.txt
 public/sitemap*.xml
 .envrc
 .direnv/
+.mcp.json
+.claude/
