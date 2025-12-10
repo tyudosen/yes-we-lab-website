@@ -30,7 +30,3 @@ jobs:
 
     - name: Run ESLint
       run: pnpm run lint
-
-    - name: Run ESLint with output
-      if: failure()
-      run: pnpm run lint -- --format=unix
