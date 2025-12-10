@@ -33,4 +33,4 @@ jobs:
 
     - name: Run ESLint with output
       if: failure()
-      run: pnpm run lint --format=@eslint/eslint/formatters/unix
+      run: pnpm run lint -- --format=unix
