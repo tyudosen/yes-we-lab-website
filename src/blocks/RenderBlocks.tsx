@@ -8,6 +8,7 @@ import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { SplashScreenBlock } from './SplashScreen/Component'
+import { ManifestoBlock } from './ManifestoBlock/Component'
 
 
 const blockComponents = {
@@ -17,6 +18,7 @@ const blockComponents = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   splashScreenBlock: SplashScreenBlock,
+  manifestoBlock: ManifestoBlock
 }
 
 export const RenderBlocks: React.FC<{
