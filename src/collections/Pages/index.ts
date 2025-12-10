@@ -21,6 +21,7 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { SplashScreen } from '@/blocks/SplashScreen/config'
+import { ManifestoBlock } from '@/blocks/ManifestoBlock/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -73,7 +74,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, SplashScreen],
+              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, SplashScreen, ManifestoBlock],
               required: false,
               admin: {
                 initCollapsed: true,

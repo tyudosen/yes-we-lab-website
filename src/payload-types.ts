@@ -200,7 +200,9 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout?: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | SplashScreenBlock)[] | null;
+  layout?:
+    | (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | SplashScreenBlock | ManifestoBlock)[]
+    | null;
   meta?: {
     title?: string | null;
     /**
@@ -811,6 +813,58 @@ export interface SplashScreenBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ManifestoBlock".
+ */
+export interface ManifestoBlock {
+  smallHeading?: string | null;
+  largeHeading?: string | null;
+  columns?:
+    | {
+        size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
+        richText?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        enableLink?: boolean | null;
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline' | 'link') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'manifestoBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1118,6 +1172,7 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         splashScreenBlock?: T | SplashScreenBlockSelect<T>;
+        manifestoBlock?: T | ManifestoBlockSelect<T>;
       };
   meta?:
     | T
@@ -1233,6 +1288,34 @@ export interface SplashScreenBlockSelect<T extends boolean = true> {
         url?: T;
         label?: T;
         appearance?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ManifestoBlock_select".
+ */
+export interface ManifestoBlockSelect<T extends boolean = true> {
+  smallHeading?: T;
+  largeHeading?: T;
+  columns?:
+    | T
+    | {
+        size?: T;
+        richText?: T;
+        enableLink?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
       };
   id?: T;
   blockName?: T;
