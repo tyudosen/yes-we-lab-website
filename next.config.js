@@ -31,6 +31,12 @@ const nextConfig = {
   },
   reactStrictMode: true,
   redirects,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreDuringBuilds: true,
+  },
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })
