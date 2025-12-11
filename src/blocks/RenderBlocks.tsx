@@ -9,6 +9,7 @@ import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { SplashScreenBlock } from './SplashScreen/Component'
 import { ManifestoBlock } from './ManifestoBlock/Component'
+import { ContactBlock } from './ContactBlock/Component'
 
 
 const blockComponents = {
@@ -18,7 +19,8 @@ const blockComponents = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   splashScreenBlock: SplashScreenBlock,
-  manifestoBlock: ManifestoBlock
+  manifestoBlock: ManifestoBlock,
+  contactBlock: ContactBlock
 }
 
 export const RenderBlocks: React.FC<{
@@ -38,8 +40,9 @@ export const RenderBlocks: React.FC<{
             const Block = blockComponents[blockType]
 
             if (Block) {
+              const isLastBlock = index === blocks.length - 1
               return (
-                <div key={index}>
+                <div key={index} className={isLastBlock ? 'mb-16 md:mb-24' : ''}>
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </div>
